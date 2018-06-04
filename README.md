@@ -18,6 +18,11 @@ Two examples have been provided:
 - [Modify ticket count](PqSave/Scripts/tickets.csx)
 - [Set item counts to 999](PqSave/Scripts/items.csx)
 
+## Running on Linux or macOS
+
+.NET Core can run PqSave on Linux or macOS.
+Make sure .NET Core is installed, open a terminal in the directory containing PqSave and run the program with `dotnet PqSave.dll`
+
 ## Building
 
 #### Using Visual Studio 2017
