@@ -21,8 +21,8 @@ namespace PqSave
 
             // Encrypt head and body chunks
             var encryptedLength = save.Length + 16 & ~0xF;
-            var head = Encrypt(BitConverter.GetBytes(encryptedLength), 0, 4);
-            var body = Encrypt(save, 0, save.Length);
+            var head = Transform(BitConverter.GetBytes(encryptedLength), 0, 4, Mode.Encrypt);
+            var body = Transform(save, 0, save.Length, Mode.Encrypt);
 
             // Concat the 2 chunks
             var encrypted = new byte[SaveLength];
@@ -33,33 +33,35 @@ namespace PqSave
 
         public static byte[] DecryptSave(byte[] saveEnc)
         {
-            var length = BitConverter.ToInt32(Decrypt(saveEnc, 0, 16), 0);
-            return Decrypt(saveEnc, 16, length);
+            var length = BitConverter.ToInt32(Transform(saveEnc, 0, 16, Mode.Decrypt), 0);
+            return Transform(saveEnc, 16, length, Mode.Decrypt);
         }
 
-        private static byte[] Encrypt(byte[] data, int index, int length)
+        private static byte[] Transform(byte[] data, int index, int length, Mode mode)
         {
             using (var aes = Aes.Create())
-            using (var encryptor = aes.CreateEncryptor(Key, Iv))
-                return Transform(data, index, length, encryptor);
-        }
-
-        private static byte[] Decrypt(byte[] data, int index, int length)
-        {
-            using (var aes = Aes.Create())
-            using (var decryptor = aes.CreateDecryptor(Key, Iv))
-                return Transform(data, index, length, decryptor);
-        }
-
-        private static byte[] Transform(byte[] data, int index, int length, ICryptoTransform decryptor)
-        {
-            using (var ms = new MemoryStream())
-            using (var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Write))
             {
-                cs.Write(data, index, length);
-                cs.FlushFinalBlock();
-                return ms.ToArray();
+                if (aes == null)
+                {
+                    Console.WriteLine("Unable to create AES cryptography object");
+                    Environment.Exit(1);
+                }
+
+                using (var transformer = mode == Mode.Decrypt ? aes.CreateDecryptor(Key, Iv) : aes.CreateEncryptor(Key, Iv))
+                using (var ms = new MemoryStream())
+                using (var cs = new CryptoStream(ms, transformer, CryptoStreamMode.Write))
+                {
+                    cs.Write(data, index, length);
+                    cs.FlushFinalBlock();
+                    return ms.ToArray();
+                }
             }
+        }
+
+        private enum Mode
+        {
+            Encrypt,
+            Decrypt
         }
     }
 }
