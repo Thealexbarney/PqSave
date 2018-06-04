@@ -2,6 +2,8 @@
 
 This program will allow you to read and write Pokémon Quest save files.
 
+Pokémon Quest's title ID is `01005D100807A000`, and the save file is a single 512 KB file named `user`.
+
 ### Usage
 ````
 Usage: pqsave mode input output [script1] [script2]...
