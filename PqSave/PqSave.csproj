@@ -11,4 +11,8 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="2.8.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="Scripts/*" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

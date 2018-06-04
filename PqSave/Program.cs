@@ -13,6 +13,19 @@ namespace PqSave
                 return;
             }
 
+            try
+            {
+                Run(args);
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine("Error reading files");
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private static void Run(string[] args)
+        {
             switch (args[0])
             {
                 case "d":

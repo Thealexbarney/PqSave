@@ -75,6 +75,8 @@ namespace PqSave
             {
                 Console.WriteLine($"Error running {filename}:\n{ex.Message}");
             }
+
+            Console.WriteLine($"Finished {filename}");
         }
     }
 
