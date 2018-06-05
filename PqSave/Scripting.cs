@@ -10,22 +10,6 @@ namespace PqSave
 {
     public static class Scripting
     {
-        public static void RufnScript(SerializeData save)
-        {
-            var items = save.itemStorage;
-            short count = 999;
-
-            items.SetCount(Item.RedCommon, count);
-            items.SetCount(Item.RedUnCommon, count);
-            items.SetCount(Item.BlueCommon, count);
-            items.SetCount(Item.BlueUnCommon, count);
-            items.SetCount(Item.YellowCommon, count);
-            items.SetCount(Item.YellowUnCommon, count);
-            items.SetCount(Item.GreyCommon, count);
-            items.SetCount(Item.GreyUnCommon, count);
-            items.SetCount(Item.Rare, count);
-            items.SetCount(Item.Legend, count);
-        }
 
         public static void SetCount(this ItemStorage items, Item type, short count)
         {
@@ -40,15 +24,15 @@ namespace PqSave
 
         public static void RunScript(SerializeData save, string filename)
         {
-            RufnScript(save);
             Console.WriteLine();
             Console.WriteLine($"Running {filename}...");
 
             try
             {
                 var script = File.ReadAllText(filename);
-                var scriptOptions = ScriptOptions.Default.AddReferences(Assembly.GetExecutingAssembly())
-                    .AddImports("System", "System.Linq", "PqSave")
+                var scriptOptions = ScriptOptions.Default
+                    .AddReferences(Assembly.GetExecutingAssembly(), typeof(ZeroFormatter.DirtyTracker).Assembly, typeof(ZeroFormatter.IKeyTuple).Assembly)
+                    .AddImports("System", "System.Linq", "PqSave", "ZeroFormatter")
                     .WithSourceResolver(SourceFileResolver.Default)
                     .WithMetadataResolver(ScriptMetadataResolver.Default)
                     .WithEmitDebugInformation(true);
