@@ -36,6 +36,16 @@ namespace PqSave
                     var decSave = File.ReadAllBytes(args[1]);
                     File.WriteAllBytes(args[2], Encryption.EncryptSave(decSave));
                     break;
+                case "x":
+                    var savex = new SaveManager(File.ReadAllBytes(args[1]));
+                    var output = Json.Serialize(savex);
+                    File.WriteAllText(args[2], output);
+                    break;
+                case "i":
+                    string import = File.ReadAllText(args[1]);
+                    SaveManager savei = Json.DeSerialize(import);
+                    File.WriteAllBytes(args[2], savei.Export());
+                    break;
                 case "s":
                     var save = new SaveManager(File.ReadAllBytes(args[1]));
 
@@ -54,10 +64,12 @@ namespace PqSave
 
         private static void PrintUsage()
         {
-            Console.WriteLine("Usage: pqsave mode input output [script1] [script2]...");
+            Console.WriteLine("Usage: pqsave mode input output [script1 (In script mode only)] [script2]...");
             Console.WriteLine("  modes:");
-            Console.WriteLine("    d Decrypt");
-            Console.WriteLine("    e Encrypt");
+            Console.WriteLine("    d Decrypt save");
+            Console.WriteLine("    e Encrypt save");
+            Console.WriteLine("    x Export save to JSON");
+            Console.WriteLine("    i Import save from JSON");
             Console.WriteLine("    s Script - Run scripts on an encrypted save");
         }
     }

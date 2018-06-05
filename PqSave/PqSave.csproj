@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Costura.Fody" Version="2.0.1" Condition=" '$(TargetFramework)' == 'net46' " />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="ZeroFormatter" Version="1.6.4" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="2.8.2" />
   </ItemGroup>

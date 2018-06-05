@@ -6,10 +6,12 @@ Pokémon Quest's title ID is `01005D100807A000`, and the save file is a single 5
 
 ### Usage
 ````
-Usage: pqsave mode input output [script1] [script2]...
+Usage: pqsave mode input output [script1 (In script mode only)] [script2]...
   modes:
-    d Decrypt
-    e Encrypt
+    d Decrypt save
+    e Encrypt save
+    x Export save to JSON
+    i Import save from JSON
     s Script - Run scripts on an encrypted save
 ````
 
